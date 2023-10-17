@@ -6,7 +6,7 @@
 
 ### install dependencies
    run : npm install 
-   Not : install all dependencies package
+   Note : install all dependencies package
 
 
 ###  use weatherapi 
