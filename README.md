@@ -19,3 +19,17 @@ click on https://www.weatherapi.com/my/ and put api key in env file  like REACT_
 
 ### run project
 run :  npm start
+
+
+### deploy on github pages 
+add line on package.json at top "homepage": "https://github.com/bhandaripankaj/weather-app",
+
+run : npm install --save gh-pages
+
+then add both line on package.json scripts object 
+"predeploy": "npm run build",
+"deploy": "gh-pages -d build",
+
+
+run : npm run deploy
+
