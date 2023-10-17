@@ -18,7 +18,7 @@ let REACT_APP_API_KEY = process.env.REACT_APP_API_KEY || "10151bf4adff49b48b4939
     console.log("process.env.API_KEY",process.env.REACT_APP_API_KEY)
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=${REACT_APP_API_KEY}&q=chandigarh&days=7&aqi=yes&alerts=yes`);
+        const response = await axios.get(`http://api.weatherapi.com/v1/forecast.json?key=10151bf4adff49b48b493946231610&q=chandigarh&days=7&aqi=yes&alerts=yes`);
             setData(response.data)
             setCity(response.data?.location?.name)
             setHourly(response.data.forecast.forecastday[0].hour)
