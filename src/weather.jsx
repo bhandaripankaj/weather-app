@@ -23,6 +23,7 @@ const APICALL = async()=>{
 
 const getWeather = async() => {
   try {
+    setIsLoading(true)
     const response = await APICALL()
     setData(response.data)
     setCity(response.data?.location?.name)
