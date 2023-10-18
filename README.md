@@ -22,7 +22,7 @@ run :  npm start
 
 
 ### deploy on github pages 
-add line on package.json at top   "homepage": "https://${username}.github.io/weather-app",
+add line on package.json at top   "homepage":"https://${username}.github.io/weather-app",
 
 
 run : npm install --save gh-pages
