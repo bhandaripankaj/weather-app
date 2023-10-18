@@ -7,19 +7,7 @@
   pointer-events: none;
 }
 
- /* .search-box {
-  width: 80%;
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  position: relative;
-  padding: 10px;
-  background-color: #499ffc;
-  color: white;
-  border-radius: 10px;
- margin-top: 10px;
- margin-left: 50px;
-}  */
+ 
 
 .search-box {
   width: 80%;
@@ -405,5 +393,66 @@
   }
   to {
     transform: rotate(360deg);
+  }
+}
+
+
+
+.skeleton-placeholder {
+  background: linear-gradient(90deg, #84aeed 0px, #94b7eb 40px, #a2c3f3e0 80px);
+  animation: animation 2.5s infinite;
+}
+.skeleton-location p{
+  margin-top: 10px !important;
+  width: fit-content;
+  color: #fdfeff00;
+  margin: auto;
+  background: linear-gradient(90deg, #84aeed 0px, #94b7eb 40px, #a2c3f3e0 80px);
+  animation: animation 2.5s infinite;
+}
+
+.skeleton-day{
+  background: linear-gradient(90deg, #84aeed 0px, #94b7eb 40px, #a2c3f3e0 80px);
+  animation: animation 2.5s infinite;
+  width: fit-content;
+  margin: auto !important;
+  color: #fdfeff00;
+
+}
+.skeleton-forecast{
+  margin-top: 10px;
+  background: linear-gradient(90deg, #84aeed 0px, #94b7eb 40px, #a2c3f3e0 80px);
+  animation: animation 2.5s infinite;
+  width: -moz-fit-content;
+  color: #fdfeff00;
+}
+.skeleton-forecast-percentage {
+  background: linear-gradient(90deg, #84aeed 0px, #94b7eb 40px, #a2c3f3e0 80px);
+  animation: animation 2.5s infinite;
+  color: #fdfeff00;
+  margin-top: 10px;
+
+}
+
+.skeleton-forecast-icon button{
+  background: linear-gradient(90deg, #84aeed 0px, #94b7eb 40px, #a2c3f3e0 80px);
+  animation: animation 2.5s infinite;
+  width: 95px;
+}
+
+.skeleton-weekly-column{
+  background: linear-gradient(90deg, #84aeed 0px, #94b7eb 40px, #a2c3f3e0 80px);
+  animation: animation 1.5s infinite;
+  height: 25px;
+
+}
+
+@keyframes animation {
+  0% {
+    background-position: -100px;
+  }
+  40%,
+  100% {
+    background-position: 270px;
   }
 }

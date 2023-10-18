@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios'
 import moment from 'moment';
+import Skeleton from 'react-loading-skeleton';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch,faPaperPlane,faTint,faCircle,faUmbrella,faWind} from '@fortawesome/free-solid-svg-icons';
 
 const Weather = () => {
   const [data,setData] = useState({})
   const [city, setCity] = useState('chandigarh');
-const [hourly,setHourly] = useState([])
+  const [hourly,setHourly] = useState([])
+  const [isLoading, setIsLoading] = useState(true);
 
   const formatDate = (dateString) => {
     const formattedDate = moment.utc(dateString).format('dddd, D MMMM YYYY');
@@ -25,6 +28,7 @@ const getWeather = async() => {
     setData(response.data)
     setCity(response.data?.location?.name)
     setHourly(response.data.forecast.forecastday[0].hour)
+    setTimeout(()=>{setIsLoading(false)},1000)
 } catch (error) {
   console.error('Error fetching weather data:', error);
   alert("Please enter another location",)
@@ -44,6 +48,7 @@ const getWeather = async() => {
         }
       };
       fetchData()
+      setTimeout(()=>{setIsLoading(false)},1000)
     }, []); 
 
 
@@ -65,69 +70,129 @@ const getWeather = async() => {
         <button onClick={getWeather}>
         <FontAwesomeIcon icon={faPaperPlane} /> </button>
       </div>
-       <p className='location-name'> {data?.location?.country} , {data?.location?.name}</p>
-       <p>{formatDate(data?.location?.localtime)}</p>
+       {isLoading?(
+       <div className='skeleton-location'>
+         <p className='location-name'> {data?.location?.country} , {data?.location?.name}</p>
+         <p>{formatDate(data?.location?.localtime)}</p>
+       </div>
+       ):(
+       <div>
+         <p className='location-name'> {data?.location?.country} , {data?.location?.name}</p>
+         <p>{formatDate(data?.location?.localtime)}</p>
+       </div>
+       )}
        <div className='report'> 
-       <p className='day'>Today</p>
+       {isLoading?(
+         <p className='day skeleton-day'>Today</p>
+       ):(
+         <p className='day'>Today</p>
+       )}
         <div className='main'>
-          <div className='forecast'>
-              <img src= {"https:"+data?.current?.condition?.icon} alt="Weather Icon" />
-          <FontAwesomeIcon icon={faCircle} className='circle' />
-            <p className='temperature'>{data?.current?.temp_c}°C <br></br>
-            <span>{data?.current?.condition?.text}</span>
-            </p>
-          </div>
-          <div className='forecast-icon'>
-             <button>
-             <FontAwesomeIcon icon={faWind} style={{ color: '#35c759',  }} />
-             </button>
-             <button>
-             <FontAwesomeIcon icon={faTint} style={{ color: '#007aff',  }} />
-             </button>
-             <button>
-             <FontAwesomeIcon icon={faUmbrella} style={{ color: '#ff3c2f',  }} />
-             </button>
-          </div>
-          <div className='forecast-percentage'>
+          {isLoading?(
+            <div className='forecast skeleton-forecast'>
+            {/* <img src= {"https:"+data?.current?.condition?.icon} alt="Weather Icon" /> */}
+         {/* <FontAwesomeIcon icon={faCircle} className='circle' /> */}
+          <p className='temperature'>{data?.current?.temp_c}°C <br></br>
+          <span>{data?.current?.condition?.text}</span>
+          </p>
+        </div>
+          ):(
+            <div className='forecast'>
+                <img src= {"https:"+data?.current?.condition?.icon} alt="Weather Icon" />
+            <FontAwesomeIcon icon={faCircle} className='circle' />
+              <p className='temperature'>{data?.current?.temp_c}°C <br></br>
+              <span>{data?.current?.condition?.text}</span>
+              </p>
+            </div>
+          )}
+          {isLoading?(
+            <div className='forecast-icon skeleton-forecast-icon'>
+            <button>
+            </button>
+            <button>
+            </button>
+            <button>
+            </button>
+         </div>
+          ):(
+            <div className='forecast-icon'>
+               <button>
+               <FontAwesomeIcon icon={faWind} style={{ color: '#35c759',  }} />
+               </button>
+               <button>
+               <FontAwesomeIcon icon={faTint} style={{ color: '#007aff',  }} />
+               </button>
+               <button>
+               <FontAwesomeIcon icon={faUmbrella} style={{ color: '#ff3c2f',  }} />
+               </button>
+            </div>
+          )}
+          {isLoading?(
+             <div className='forecast-percentage skeleton-forecast-percentage'>
              <p>{data?.current?.wind_kph} km/hr</p>
              <p>{data?.current?.humidity}%</p>
              <p>{data?.current?.precip_mm}%</p>
           </div>
+          ):(
+            <div className='forecast-percentage'>
+            <p>{data?.current?.wind_kph} km/hr</p>
+            <p>{data?.current?.humidity}%</p>
+            <p>{data?.current?.precip_mm}%</p>
+            </div>
+          )}
+         
         </div>
        </div>
        <div className="hourly-container">
-      {hourly.map((el, index) => {
-        if (
-          new Date(el.time) >  new Date().setHours(new Date().getHours() - 1)
-        ) {
-          return (
-            <div className='hourly-column' key={index}>
-              <p>{moment(el.time, "YYYY-MM-DD HH:mm").format("h A")} </p>
-              <img src= {"https:"+el.condition.icon} alt="Weather Icon" />
-
-              <p>{el.temp_c}°C</p>
-            </div>
-          );
+        {isLoading?
+        Array.from({length:5}).map((el,index)=>(
+          <div className='hourly-column skeleton-placeholder' key={index}>
+        </div>
+        ))
+        :
+          hourly.map((el, index) => {
+            if (
+              new Date(el.time) >  new Date().setHours(new Date().getHours() - 1)
+            ) {
+              return (
+                <div className='hourly-column' key={index}>
+                  <p>{moment(el.time, "YYYY-MM-DD HH:mm").format("h A")} </p>
+                  <img src= {"https:"+el.condition.icon} alt="Weather Icon" />
+    
+                  <p>{el.temp_c}°C</p>
+                </div>
+              );
+            }
+            return null;
+          })
         }
-        return null;
-      })}
     </div>
     <div className='weekly-container'>
-      {data?.forecast?.forecastday.map((el,index)=>{
-        if(
-          new Date(el.date) > new Date()
-        ){
-          return (
-            <div className='weekly-column' key={index}>
-            <p>{moment(el.date, 'YYYY-MM-DD').format('ddd')}</p>
-            <p>{el.day.mintemp_c} | {el.day.maxtemp_c}°C</p>
-            <img src= {"https:"+el.day.condition.icon} alt="Weather Icon" />
-          </div>
-          )
-        }
-        return null
+      {isLoading?(
+    Array.from({length:4}).map((el,index)=>{
+        return (
+          <div className='weekly-column skeleton-weekly-column' key={index}>
+        </div>
+        )
+    }
+    )
+      ):
+    data?.forecast?.forecastday.map((el,index)=>{
+      if(
+        new Date(el.date) > new Date()
+      ){
+        return (
+          <div className='weekly-column' key={index}>
+          <p>{moment(el.date, 'YYYY-MM-DD').format('ddd')}</p>
+          <p>{el.day.mintemp_c} | {el.day.maxtemp_c}°C</p>
+          <img src= {"https:"+el.day.condition.icon} alt="Weather Icon" />
+        </div>
+        )
       }
-      )}
+      return null
+    }
+    )
+      }
     </div>
     </div>
   );
