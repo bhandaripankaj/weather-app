@@ -7,7 +7,7 @@ import { faSearch,faPaperPlane,faTint,faCircle,faUmbrella,faWind} from '@fortawe
 
 const Weather = () => {
   const [data,setData] = useState({})
-  const [city, setCity] = useState('chandigarh');
+  const [city, setCity] = useState('india');
   const [hourly,setHourly] = useState([])
   const [isLoading, setIsLoading] = useState(true);
 
